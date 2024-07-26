@@ -4,17 +4,40 @@ You will run this project from main.py, so need to set things up accordingly
 '''
 
 import json
-import analysis_network_centrality
-import analysis_similar_actors_genre
+import requests
+import numpy as np
+import pandas as pd
+import networkx as nx
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import jsonlines
+#import analysis_network_centrality as anc
+# import analysis_similar_actors_genre as sag
 
-# Ingest and save the imbd_movies dataset
+url = "https://github.com/cbuntain/umd.inst414/blob/main/data/imdb_movies_2000to2022.prolific.json?raw=true"
+filename = '../data/imdb_movies_2000to2022.prolific.json'
 
 
+def download_json(url):
+    response = requests.get(url)
+    response.raise_for_status()
 
-# Call functions / instanciate objects from the two analysis .py files
+    with open(filename, 'w+') as temp_file:
+        temp_file.write(response.text)
+
+
+def load_json():
+    data = []
+    datalines = jsonlines.open(filename, 'r')
+    for line in datalines:
+        data.append(line)
+    return data
+
+
 def main():
-
-
+    download_json(url)
+    data = load_json()
+    print(data)
 
 
 if __name__ == "__main__":
