@@ -10,11 +10,26 @@ from urllib.request import urlopen
 from sklearn.metrics import DistanceMetric
 
 def load_info(file_path):
+    '''
+    Loads the Json file line by line.
+    
+    Args:
+        file_path (str): The path to the json file from the main and data directory.
+    '''
     with open(file_path, 'r') as f: 
         data = [json.loads(line) for line in f]
         return data 
         
 def graph(data):
+    '''
+    Creates a Networkx graph from the json data. Adds nodes, edges, and finds the weight if applicable.
+    
+    Args: 
+        data (list from dict): Each dict represents actors in pairs.
+        
+    Returns: 
+        networx Graph: a graph that includes actor ID's, edges, nodes, and weight.
+    '''
     g = nx.Graph()
     for movie in data: 
             actors = movie.get('actors', [])
@@ -31,6 +46,16 @@ def graph(data):
     return g
             
 def centrality(g):
+    '''
+    Calculate centrality metrics (from the lecture) on the graph and actors from above.
+    
+    Args: 
+        g: networkx graph 
+    
+    Returns: 
+        pd.DataFrame: A pandas dataframe (called metrics_df) that contains centrality metrics for each node (actor).
+    
+    '''
     degree = dict(nx.degree(g))
     pagerank = nx.pagerank(g)
     closeness = nx.closeness(g)
@@ -47,11 +72,14 @@ def centrality(g):
         })
     return metrics_df
 
-def analysis(graph, data):
-    g = graph(data)
-    metrics_df = centrality(g)
-
 def save_to_csv(metrics_df, output_file):
+    '''
+    My attempt at saving the dataframe output to a CSV file. It doesnt work. 
+    
+    Args: 
+        metrics_df (pandas DataFrame): Contains the centrality metrics.
+        output_file (str): the path were the csv file was hypothetically saved.
+    '''
     output_file = Path('../data/network_centrality_metrics.csv')
     output_file.parent.mkdir(parents=True, exist_ok=True)
     metrics_df.to_csv(output_file, index=False)

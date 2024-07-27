@@ -21,5 +21,3 @@ You will submit the URL for this repo in your GitHub in ELMS.
 
 Grading: 
 Ali and I will look to make sure you've output the correct CSV files. We will only run main.py, so make sure that you stucture this correctly and push your final code. Credit will be given for adhering to the course's Code Standards and Data Standards, using GitHub correctly, and producing the correct output, among other considerations. 
-
-
